@@ -10,32 +10,52 @@ function getComputerChoice () {
 }
 
 function playRound (playerSelection, computerSelection) {
-    playerSelection = playerSelection.toLowerCase();
-
     if (playerSelection === computerSelection) {
-        return "Ничья!";
-    } else if (
+        return "Ничья!"; 
+    } 
+        if (
         (playerSelection === "камень" && computerSelection === "ножницы") ||
         (playerSelection === "ножницы" && computerSelection === "бумага") ||
         (playerSelection === "бумага" && computerSelection === "камень")
     ) {
         return `Вы выиграли! ${playerSelection} побеждает ${computerSelection}`;
-    } else if (
-        (playerSelection === "камень" && computerSelection === "бумага") ||
-        (playerSelection === "ножницы" && computerSelection === "камень") ||
-        (playerSelection === "бумага" && computerSelection === "ножницы")
-    ) {
+    } 
     return `Вы проиграли! ${computerSelection} побеждает ${playerSelection}`;
-    } else {
-    return "Некорректный ввод!";
-    }
 }
 
 function game () {
+    const validChoices = ["камень", "ножницы", "бумага"];
+    let playerScore = 0;
+    let computerScore = 0;
+
     for (let i = 0; i < 5; i++) {
-        const playerSelection = prompt("Выберите: камень, ножницы, бумага");
+        const playerSelection = prompt("Выберите: камень, ножницы, бумага").toLowerCase();
+
+        if (!validChoices.includes(playerSelection)) {
+            alert("Некорректный ввод! Попробуйте снова.");
+            i--;
+            continue;
+        }
         const computerSelection = getComputerChoice();
-        console.log(playRound(playerSelection,computerSelection));
+        const result = playRound(playerSelection,computerSelection);
+        console.log(result);
+
+        if (result.includes("Вы выиграли!")) {
+            playerScore++;
+        } else if (result.includes("Вы проиграли!")) {
+          computerScore++;
+        }
+    }
+    console.log("Игра завершена!");
+    console.log(`Очки игрока: ${playerScore}`);
+    console.log(`Очки компьютера: ${computerScore}`);
+
+    if (playerScore > computerScore) {
+        console.log("Вы выиграли игру!");
+    } else if (computerScore > playerScore) {
+        console.log("Вы проиграли игру!");
+    } else {
+        console.log("Вы сыграли в ничью!");
     }
 }
 
